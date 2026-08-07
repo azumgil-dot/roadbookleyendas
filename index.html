@@ -23,26 +23,28 @@
 
     .pagina {
       width: 100%;
-      display: flex;
-      justify-content: center;
+      max-width: 900px;
+      position: relative;
+      margin: 0 auto;
     }
 
     #imagenPagina {
       display: block;
       width: 100%;
-      max-width: 900px;
       height: auto;
     }
 
-    .audio {
-      width: 100%;
-      max-width: 900px;
-      padding: 8px 20px 10px;
+    .audio-superpuesto {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 15px;
+      z-index: 10;
     }
 
-    audio {
+    #audioPagina {
       width: 100%;
-      display: block;
+      opacity: 0.92;
     }
 
     .navegacion {
@@ -52,7 +54,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 5px 20px 25px;
+      padding: 15px 20px 25px;
     }
 
     button {
@@ -85,10 +87,16 @@
       font-weight: bold;
       text-align: center;
       min-width: 120px;
-      flex-shrink: 0;
     }
 
     @media (max-width: 600px) {
+
+      .audio-superpuesto {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+      }
+
       button {
         padding: 10px 12px;
         font-size: 14px;
@@ -104,11 +112,6 @@
         padding-left: 10px;
         padding-right: 10px;
       }
-
-      .audio {
-        padding-left: 10px;
-        padding-right: 10px;
-      }
     }
   </style>
 </head>
@@ -116,15 +119,17 @@
 <body>
 
   <div class="pagina">
+
     <img
       id="imagenPagina"
       src="./Leyendas.png"
       alt="Leyendas y Misterios"
     >
-  </div>
 
-  <div class="audio">
-    <audio id="audioPagina" controls loop></audio>
+    <div class="audio-superpuesto" id="cajaAudio">
+      <audio id="audioPagina" controls loop></audio>
+    </div>
+
   </div>
 
   <div class="navegacion">
@@ -144,6 +149,7 @@
   </div>
 
   <script>
+
     const paginas = [
       {
         imagen: "./Leyendas.png",
@@ -180,8 +186,10 @@
     let paginaActual = 0;
 
     function mostrarPagina() {
+
       const imagen = document.getElementById("imagenPagina");
       const audio = document.getElementById("audioPagina");
+      const cajaAudio = document.getElementById("cajaAudio");
       const contador = document.getElementById("contadorPagina");
 
       imagen.src = paginas[paginaActual].imagen;
@@ -197,25 +205,29 @@
         paginaActual === paginas.length - 1;
 
       audio.pause();
-      audio.currentTime = 0;
+      audio.removeAttribute("src");
 
       if (paginas[paginaActual].audio !== "") {
+
         audio.src = paginas[paginaActual].audio;
-        audio.style.display = "block";
+        cajaAudio.style.display = "block";
         audio.load();
 
         audio.play().catch(function() {
-          console.log("El navegador requiere pulsar Play.");
+          console.log("Pulsa Play para iniciar el sonido.");
         });
 
       } else {
-        audio.removeAttribute("src");
-        audio.style.display = "none";
+
+        cajaAudio.style.display = "none";
+
       }
     }
 
     function paginaSiguiente() {
+
       if (paginaActual < paginas.length - 1) {
+
         paginaActual++;
         mostrarPagina();
 
@@ -227,7 +239,9 @@
     }
 
     function paginaAnterior() {
+
       if (paginaActual > 0) {
+
         paginaActual--;
         mostrarPagina();
 
@@ -239,6 +253,7 @@
     }
 
     mostrarPagina();
+
   </script>
 
 </body>
