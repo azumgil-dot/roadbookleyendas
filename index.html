@@ -267,34 +267,46 @@
 
     function paginaSiguiente() {
 
-      if (paginaActual < paginas.length - 1) {
+  if (paginaActual < paginas.length - 1) {
 
-        paginaActual++;
+    paginaActual++;
 
-        mostrarPagina();
+    mostrarPagina();
 
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth"
-        });
-      }
+    if (paginas[paginaActual].audio) {
+      audioPagina.play().catch(function() {
+        console.log("El navegador ha bloqueado la reproducción automática.");
+      });
     }
 
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+}
 
-    function paginaAnterior() {
 
-      if (paginaActual > 0) {
+function paginaAnterior() {
 
-        paginaActual--;
+  if (paginaActual > 0) {
 
-        mostrarPagina();
+    paginaActual--;
 
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth"
-        });
-      }
+    mostrarPagina();
+
+    if (paginas[paginaActual].audio) {
+      audioPagina.play().catch(function() {
+        console.log("El navegador ha bloqueado la reproducción automática.");
+      });
     }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+}
 
 
     /* PRECARGAR LAS IMÁGENES */
