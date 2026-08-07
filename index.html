@@ -457,6 +457,22 @@ function irAlIndice() {
   });
 }
 
+function irADestino(destino) {
+  const posicion = paginas.findIndex(function(pagina) {
+    return pagina.titulo.toLowerCase().includes(destino.toLowerCase());
+  });
+
+  if (posicion !== -1) {
+    paginaActual = posicion;
+    mostrarPagina();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+}
+
 mostrarPagina();
 
     if (paginas[paginaActual].audio) {
