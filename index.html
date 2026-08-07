@@ -40,7 +40,7 @@
       max-width: 900px;
       display: flex;
       justify-content: space-between;
-      padding: 15px 20px 25px;
+      padding: 15px 20px 10px;
       gap: 15px;
     }
 
@@ -62,6 +62,16 @@
     button:disabled {
       opacity: 0.25;
       cursor: default;
+    }
+
+    .audio {
+      width: 100%;
+      max-width: 900px;
+      padding: 0 20px 25px;
+    }
+
+    audio {
+      width: 100%;
     }
   </style>
 </head>
@@ -86,15 +96,21 @@
     </button>
   </div>
 
+  <div class="audio">
+    <audio id="audioPagina" controls loop></audio>
+  </div>
+
   <script>
     const paginas = [
       {
         imagen: "./Leyendas.png",
-        titulo: "Leyendas y Misterios"
+        titulo: "Leyendas y Misterios",
+        audio: ""
       },
       {
         imagen: "./limoges.png",
-        titulo: "Leyendas y misterios de Limoges"
+        titulo: "Leyendas y misterios de Limoges",
+        audio: "./iglesia.mp3"
       }
     ];
 
@@ -102,6 +118,7 @@
 
     function mostrarPagina() {
       const imagen = document.getElementById("imagenPagina");
+      const audio = document.getElementById("audioPagina");
 
       imagen.src = paginas[paginaActual].imagen;
       imagen.alt = paginas[paginaActual].titulo;
@@ -111,6 +128,21 @@
 
       document.getElementById("siguiente").disabled =
         paginaActual === paginas.length - 1;
+
+      audio.pause();
+
+      if (paginas[paginaActual].audio) {
+        audio.src = paginas[paginaActual].audio;
+        audio.style.display = "block";
+        audio.load();
+
+        audio.play().catch(() => {
+          console.log("El navegador requiere una interacción para reproducir el audio.");
+        });
+      } else {
+        audio.removeAttribute("src");
+        audio.style.display = "none";
+      }
     }
 
     function paginaSiguiente() {
@@ -130,10 +162,6 @@
     }
 
     mostrarPagina();
-  </script>
-
-</body>
-</html>
   </script>
 
 </body>
