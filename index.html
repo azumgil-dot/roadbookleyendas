@@ -67,10 +67,15 @@
 
     #contadorPagina {
       color: white;
-      font-size: 17px;
+      background: #2b2422;
+      border: 2px solid #3dd9ac;
+      border-radius: 18px;
+      padding: 10px 16px;
+      font-size: 16px;
       font-weight: bold;
       text-align: center;
-      flex: 1;
+      min-width: 120px;
+      flex-shrink: 0;
     }
 
     .audio {
@@ -85,12 +90,19 @@
 
     @media (max-width: 600px) {
       button {
-        padding: 10px 14px;
+        padding: 10px 12px;
         font-size: 14px;
       }
 
       #contadorPagina {
-        font-size: 14px;
+        font-size: 13px;
+        min-width: 100px;
+        padding: 9px 10px;
+      }
+
+      .navegacion {
+        padding-left: 10px;
+        padding-right: 10px;
       }
     }
   </style>
@@ -112,19 +124,8 @@
       ← Anterior
     </button>
 
-    <div id="contadorPagina" style="
-  color: white;
-  background: #2b2422;
-  border: 2px solid #3dd9ac;
-  border-radius: 18px;
-  padding: 10px 16px;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  min-width: 120px;
-">
-  Página 1 de 3
-</div>
+    <div id="contadorPagina">
+      Página 1 de 6
     </div>
 
     <button id="siguiente" onclick="paginaSiguiente()">
@@ -138,44 +139,42 @@
   </div>
 
   <script>
-
     const paginas = [
-  {
-    imagen: "./Leyendas.png",
-    titulo: "Leyendas y Misterios",
-    audio: ""
-  },
-  {
-    imagen: "./limoges.png",
-    titulo: "Leyendas y misterios de Limoges",
-    audio: "./iglesia.mp3"
-  },
-  {
-    imagen: "./vitremisterios.png",
-    titulo: "Leyendas y misterios de Vitré",
-    audio: "./u_o5lu7i5i2p-gato-361799.mp3"
-  },
-  {
-    imagen: "./fourgueresmister.png",
-    titulo: "Leyendas y misterios de Fougères",
-    audio: "./early-night.mp3"
-  },
-  {
-    imagen: "./Etretat misterios.png",
-    titulo: "Leyendas y misterios de Étretat",
-    audio: "./waves.mp3"
-  },
-  {
-    imagen: "./monitsamisterios.png",
-    titulo: "Leyendas y misterios de Mont-Saint-Michel",
-    audio: "./templarsounds.mp3"
-  }
-];
+      {
+        imagen: "./Leyendas.png",
+        titulo: "Leyendas y Misterios",
+        audio: ""
+      },
+      {
+        imagen: "./limoges.png",
+        titulo: "Leyendas y misterios de Limoges",
+        audio: "./iglesia.mp3"
+      },
+      {
+        imagen: "./vitremisterios.png",
+        titulo: "Leyendas y misterios de Vitré",
+        audio: "./u_o5lu7i5i2p-gato-361799.mp3"
+      },
+      {
+        imagen: "./fourgueresmister.png",
+        titulo: "Leyendas y misterios de Fougères",
+        audio: "./early-night.mp3"
+      },
+      {
+        imagen: "./Etretat misterios.png",
+        titulo: "Leyendas y misterios de Étretat",
+        audio: "./waves.mp3"
+      },
+      {
+        imagen: "./monitsamisterios.png",
+        titulo: "Leyendas y misterios de Mont-Saint-Michel",
+        audio: "./templarsounds.mp3"
+      }
+    ];
 
     let paginaActual = 0;
 
     function mostrarPagina() {
-
       const imagen = document.getElementById("imagenPagina");
       const audio = document.getElementById("audioPagina");
       const contador = document.getElementById("contadorPagina");
@@ -196,7 +195,6 @@
       audio.currentTime = 0;
 
       if (paginas[paginaActual].audio !== "") {
-
         audio.src = paginas[paginaActual].audio;
         audio.style.display = "block";
         audio.load();
@@ -204,19 +202,14 @@
         audio.play().catch(function() {
           console.log("El navegador requiere pulsar Play.");
         });
-
       } else {
-
         audio.removeAttribute("src");
         audio.style.display = "none";
-
       }
     }
 
     function paginaSiguiente() {
-
       if (paginaActual < paginas.length - 1) {
-
         paginaActual++;
         mostrarPagina();
 
@@ -228,9 +221,7 @@
     }
 
     function paginaAnterior() {
-
       if (paginaActual > 0) {
-
         paginaActual--;
         mostrarPagina();
 
@@ -242,7 +233,6 @@
     }
 
     mostrarPagina();
-
   </script>
 
 </body>
