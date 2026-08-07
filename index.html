@@ -69,12 +69,21 @@
 <body>
 
   <div class="pagina">
-    <img id="imagenPagina" src="./Leyendas.png" alt="Leyendas y Misterios">
+    <img
+      id="imagenPagina"
+      src="./Leyendas.png"
+      alt="Leyendas y Misterios"
+    >
   </div>
 
   <div class="botones">
-    <button id="anterior" onclick="paginaAnterior()">← Anterior</button>
-    <button id="siguiente" onclick="paginaSiguiente()">Siguiente →</button>
+    <button id="anterior" onclick="paginaAnterior()">
+      ← Anterior
+    </button>
+
+    <button id="siguiente" onclick="paginaSiguiente()">
+      Siguiente →
+    </button>
   </div>
 
   <script>
@@ -92,10 +101,14 @@
     let paginaActual = 0;
 
     function mostrarPagina() {
-      document.getElementById("imagenPagina").src = paginas[paginaActual].imagen;
-      document.getElementById("imagenPagina").alt = paginas[paginaActual].titulo;
+      const imagen = document.getElementById("imagenPagina");
 
-      document.getElementById("anterior").disabled = paginaActual === 0;
+      imagen.src = paginas[paginaActual].imagen;
+      imagen.alt = paginas[paginaActual].titulo;
+
+      document.getElementById("anterior").disabled =
+        paginaActual === 0;
+
       document.getElementById("siguiente").disabled =
         paginaActual === paginas.length - 1;
     }
@@ -117,6 +130,10 @@
     }
 
     mostrarPagina();
+  </script>
+
+</body>
+</html>
   </script>
 
 </body>
