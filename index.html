@@ -700,8 +700,7 @@
     const botonSiguiente =
       document.getElementById("siguiente");
 
-    const enlacesIndice =
-      document.getElementById("enlacesIndice");
+   const enlacesIndice = document.getElementById("enlacesIndice");
 
 
     function mostrarPagina(reproducirAudio = false) {
@@ -713,7 +712,12 @@
 
       imagenPagina.src = pagina.imagen;
       imagenPagina.alt = pagina.titulo;
-
+      
+if (pagina.imagen === "./indice.png") {
+  enlacesIndice.style.display = "block";
+} else {
+  enlacesIndice.style.display = "none";
+}
 
       /* ÍNDICE CLICABLE */
 
