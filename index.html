@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Leyendas y Misterios</title>
 
   <style>
@@ -24,12 +25,41 @@
       width: 100%;
       max-width: 900px;
       margin: 0 auto;
+      position: relative;
     }
 
     #imagenPagina {
       display: block;
       width: 100%;
       height: auto;
+    }
+
+    /* ZONAS CLICABLES DEL ÍNDICE */
+    #enlacesIndice {
+      display: none;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+    }
+
+    .zona-indice {
+      position: absolute;
+      display: block;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 20;
+    }
+
+    .zona-indice:hover {
+      opacity: 0.12;
+      background: #3dd9ac !important;
     }
 
     .audio {
@@ -53,22 +83,22 @@
       padding: 10px 20px 25px;
     }
 
-    button {
+    .navegacion button {
       background: #3dd9ac;
       color: #171312;
       border: none;
       border-radius: 20px;
-      padding: 12px 20px;
+      padding: 12px 18px;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
     }
 
-    button:hover {
+    .navegacion button:hover {
       opacity: 0.85;
     }
 
-    button:disabled {
+    .navegacion button:disabled {
       opacity: 0.25;
       cursor: default;
     }
@@ -82,24 +112,25 @@
       font-size: 16px;
       font-weight: bold;
       text-align: center;
-      min-width: 120px;
+      min-width: 125px;
     }
 
     @media (max-width: 600px) {
-      button {
-        padding: 10px 12px;
-        font-size: 14px;
+      .navegacion {
+        gap: 5px;
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+
+      .navegacion button {
+        padding: 9px 8px;
+        font-size: 12px;
       }
 
       #contadorPagina {
-        font-size: 13px;
-        min-width: 100px;
-        padding: 9px 10px;
-      }
-
-      .navegacion {
-        padding-left: 10px;
-        padding-right: 10px;
+        font-size: 12px;
+        min-width: 82px;
+        padding: 9px 6px;
       }
 
       .audio {
@@ -112,233 +143,520 @@
 
 <body>
 
-  <div class="pagina" id="contenedorPagina">
+  <div class="pagina">
 
-  <img
-    id="imagenPagina"
-    src="./Leyendas.png"
-    alt="Leyendas y Misterios"
-  >
+    <img
+      id="imagenPagina"
+      src="./Leyendas.png"
+      alt="Leyendas y Misterios"
+    >
 
-  <div id="enlacesIndice">
-  <button
-    class="zona-indice"
-    onclick="irADestino('Limoges')"
-    style="left: 20%; top: 31%; width: 12%; height: 3%;">
-  </button>
-</div>
+    <!-- ZONAS INVISIBLES DEL ÍNDICE -->
+    <div id="enlacesIndice">
 
-</div>
+      <!-- PAÍSES BAJOS -->
+
+      <button
+        class="zona-indice"
+        style="left:19%; top:30.4%; width:12%; height:1.8%;"
+        onclick="irADestino('Kinderdijk')"
+        aria-label="Kinderdijk">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:19%; top:32.1%; width:10%; height:1.8%;"
+        onclick="irADestino('Sluis')"
+        aria-label="Sluis">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:19%; top:37.5%; width:12%; height:1.8%;"
+        onclick="irADestino('Willemstad')"
+        aria-label="Willemstad">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:19%; top:39.3%; width:13%; height:1.8%;"
+        onclick="irADestino('Schoonhoven')"
+        aria-label="Schoonhoven">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:19%; top:41.1%; width:12%; height:1.8%;"
+        onclick="irADestino('Dordrecht')"
+        aria-label="Dordrecht">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:19%; top:42.9%; width:11%; height:1.8%;"
+        onclick="irADestino('Heusden')"
+        aria-label="Heusden">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:19%; top:44.7%; width:9%; height:1.8%;"
+        onclick="irADestino('Thorn')"
+        aria-label="Thorn">
+      </button>
+
+
+      <!-- ALEMANIA -->
+
+      <button
+        class="zona-indice"
+        style="left:50%; top:30.4%; width:12%; height:1.8%;"
+        onclick="irADestino('Aquisgrán')"
+        aria-label="Aquisgrán">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:50%; top:32.1%; width:11%; height:1.8%;"
+        onclick="irADestino('Tréveris')"
+        aria-label="Tréveris">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:50%; top:33.9%; width:13%; height:1.8%;"
+        onclick="irADestino('Baden-Baden')"
+        aria-label="Baden-Baden">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:50%; top:35.7%; width:12%; height:1.8%;"
+        onclick="irADestino('Schönach')"
+        aria-label="Schönach">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:50%; top:38.8%; width:14%; height:3.4%;"
+        onclick="irADestino('Durbach')"
+        aria-label="Durbach">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:50%; top:42.8%; width:13%; height:1.8%;"
+        onclick="irADestino('Gengenbach')"
+        aria-label="Gengenbach">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:50%; top:44.6%; width:11%; height:1.8%;"
+        onclick="irADestino('Triburgo')"
+        aria-label="Triburgo">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:50%; top:46.4%; width:9%; height:1.8%;"
+        onclick="irADestino('Titisee')"
+        aria-label="Titisee">
+      </button>
+
+
+      <!-- FRANCIA -->
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:30.4%; width:11%; height:1.8%;"
+        onclick="irADestino('Limoges')"
+        aria-label="Limoges">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:32.1%; width:9%; height:1.8%;"
+        onclick="irADestino('Vitré')"
+        aria-label="Vitré">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:33.9%; width:11%; height:1.8%;"
+        onclick="irADestino('Fougères')"
+        aria-label="Fougères">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:35.6%; width:17%; height:2.4%;"
+        onclick="irADestino('Mont-Saint-Michel')"
+        aria-label="Mont-Saint-Michel">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:44.6%; width:10%; height:1.8%;"
+        onclick="irADestino('Étretat')"
+        aria-label="Étretat">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:46.4%; width:9%; height:1.8%;"
+        onclick="irADestino('Rouen')"
+        aria-label="Rouen">
+      </button>
+
+
+      <!-- BÉLGICA -->
+
+      <button
+        class="zona-indice"
+        style="left:19%; top:55.2%; width:10%; height:1.9%;"
+        onclick="irADestino('Brujas')"
+        aria-label="Brujas">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:19%; top:57.1%; width:10%; height:1.9%;"
+        onclick="irADestino('Damme')"
+        aria-label="Damme">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:19%; top:60.8%; width:10%; height:1.9%;"
+        onclick="irADestino('Gante')"
+        aria-label="Gante">
+      </button>
+
+
+      <!-- ALSACIA -->
+
+      <button
+        class="zona-indice"
+        style="left:50%; top:55.2%; width:13%; height:1.9%;"
+        onclick="irADestino('Estrasburgo')"
+        aria-label="Estrasburgo">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:50%; top:62.7%; width:10%; height:1.9%;"
+        onclick="irADestino('Colmar')"
+        aria-label="Colmar">
+      </button>
+
+
+      <!-- SUIZA -->
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:55.2%; width:10%; height:1.9%;"
+        onclick="irADestino('Basilea')"
+        aria-label="Basilea">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:57.1%; width:9%; height:1.9%;"
+        onclick="irADestino('Berna')"
+        aria-label="Berna">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:59%; width:10%; height:1.9%;"
+        onclick="irADestino('Murten')"
+        aria-label="Murten">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:60.9%; width:11%; height:1.9%;"
+        onclick="irADestino('Montreux')"
+        aria-label="Montreux">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:62.8%; width:17%; height:1.9%;"
+        onclick="irADestino('Chillon')"
+        aria-label="Chillon">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:64.7%; width:9%; height:1.9%;"
+        onclick="irADestino('Nyon')"
+        aria-label="Nyon">
+      </button>
+
+      <button
+        class="zona-indice"
+        style="left:80%; top:66.6%; width:10%; height:1.9%;"
+        onclick="irADestino('Ginebra')"
+        aria-label="Ginebra">
+      </button>
+
+    </div>
+
+  </div>
+
 
   <div class="audio" id="cajaAudio">
     <audio
       id="audioPagina"
       controls
       loop
-      preload="metadata"
-    ></audio>
+      preload="metadata">
+    </audio>
   </div>
+
 
   <div class="navegacion">
 
-  <button id="anterior" onclick="paginaAnterior()">
-    ← Anterior
-  </button>
+    <button id="anterior" onclick="paginaAnterior()">
+      ← Anterior
+    </button>
 
-  <button onclick="irAlIndice()">
-    Índice
-  </button>
+    <button onclick="irAlIndice()">
+      Índice
+    </button>
 
-  <div id="contadorPagina">
-    Página 1
+    <div id="contadorPagina">
+      Página 1
+    </div>
+
+    <button id="siguiente" onclick="paginaSiguiente()">
+      Siguiente →
+    </button>
+
   </div>
 
-  <button id="siguiente" onclick="paginaSiguiente()">
-    Siguiente →
-  </button>
-
-</div>
 
   <script>
 
-   const paginas = [
-  {
-    imagen: "./Leyendas.png",
-    titulo: "Leyendas y Misterios",
-    audio: "./portada.mp3"
-  },
-  {
-    imagen: "./indice.png",
-    titulo: "Índice de Leyendas y Misterios",
-   },
-  {
-    imagen: "./limoges.png",
-    titulo: "Leyendas y misterios de Limoges",
-    audio: "./iglesia.mp3"
-  },
+    const paginas = [
+
+      {
+        imagen: "./Leyendas.png",
+        titulo: "Leyendas y Misterios",
+        audio: "./portada.mp3"
+      },
+
+      {
+        imagen: "./indice.png",
+        titulo: "Índice de Leyendas y Misterios",
+        audio: ""
+      },
+
+      {
+        imagen: "./limoges.png",
+        titulo: "Leyendas y misterios de Limoges",
+        audio: "./iglesia.mp3"
+      },
+
       {
         imagen: "./vitremisterios.png",
         titulo: "Leyendas y misterios de Vitré",
         audio: "./u_o5lu7i5i2p-gato-361799.mp3"
       },
+
       {
         imagen: "./fourgueresmister.png",
         titulo: "Leyendas y misterios de Fougères",
         audio: "./early-night.mp3"
       },
+
       {
         imagen: "./etretat misterios.png",
         titulo: "Leyendas y misterios de Étretat",
         audio: "./waves.mp3"
       },
+
       {
         imagen: "./monitsamisterios.png",
         titulo: "Leyendas y misterios de Mont-Saint-Michel",
         audio: "./templarsounds.mp3"
       },
+
       {
         imagen: "./rouenmiste.png",
         titulo: "Leyendas y misterios de Rouen",
         audio: "./dragon.mp3"
       },
+
       {
         imagen: "./Brujas misterios.png",
         titulo: "Leyendas y misterios de Brujas",
         audio: "./carillon2.mp3"
       },
+
       {
-  imagen: "./dammemisterios.png",
-  titulo: "Leyendas y misterios de Notre-Dame",
-  audio: "./casca.mp3"
-},
+        imagen: "./dammemisterios.png",
+        titulo: "Leyendas y misterios de Damme",
+        audio: "./casca.mp3"
+      },
+
       {
-  imagen: "./gantemisterios.png",
-  titulo: "Leyendas y misterios de Gante",
-  audio: "./tormentadrag.mp3"
-},
+        imagen: "./gantemisterios.png",
+        titulo: "Leyendas y misterios de Gante",
+        audio: "./tormentadrag.mp3"
+      },
+
       {
-  imagen: "./will.png",
-  titulo: "Leyendas y misterios de Willemstad",
-  audio: "./freesound_community-echo-dungeon-70538.mp3"
-},
-     {
-  imagen: "./sluis.png",
-  titulo: "Leyendas y misterios de Sluis",
-  audio: "./mixkit-sea-waves-with-birds-loop-1185.wav"
-},
-  {
-  imagen: "./kind.png",
-  titulo: "Kinderdijk",
-  audio: "./netherlands.mp3"
-},
+        imagen: "./will.png",
+        titulo: "Leyendas y misterios de Willemstad",
+        audio: "./freesound_community-echo-dungeon-70538.mp3"
+      },
+
       {
-  imagen: "./schoo.png",
-  titulo: "Leyendas y misterios de Schoonhoven",
-  audio: "./grillosnoche.mp3"
-},
+        imagen: "./sluis.png",
+        titulo: "Leyendas y misterios de Sluis",
+        audio: "./mixkit-sea-waves-with-birds-loop-1185.wav"
+      },
+
       {
-  imagen: "./dord.png",
-  titulo: "Leyendas y misterios de Dordrecht",
-  audio: "./cadenasbarco.mp3"
-},
+        imagen: "./kind.png",
+        titulo: "Leyendas y misterios de Kinderdijk",
+        audio: "./netherlands.mp3"
+      },
+
       {
-  imagen: "./heus.png",
-  titulo: "Leyendas y misterios de Heusden",
-  audio: "./distant.mp3"
-},
+        imagen: "./schoo.png",
+        titulo: "Leyendas y misterios de Schoonhoven",
+        audio: "./grillosnoche.mp3"
+      },
+
       {
-  imagen: "./aquis.png",
-  titulo: "Leyendas y misterios de Aquisgrán",
-  audio: "./xomxomski-dark-church-bells-423028.mp3"
-},
+        imagen: "./dord.png",
+        titulo: "Leyendas y misterios de Dordrecht",
+        audio: "./cadenasbarco.mp3"
+      },
+
       {
-  imagen: "./th.png",
-  titulo: "Leyendas y misterios de Thorn",
-  audio: "./freesound_community-church-bell-5993.mp3"
-},
+        imagen: "./heus.png",
+        titulo: "Leyendas y misterios de Heusden",
+        audio: "./distant.mp3"
+      },
+
       {
-  imagen: "./treve.png",
-  titulo: "Leyendas y misterios de Tréveris",
-  audio: "./shut_up_ghost-haunted-mansion-echo-ambiance-186925.mp3"
-},
+        imagen: "./aquis.png",
+        titulo: "Leyendas y misterios de Aquisgrán",
+        audio: "./xomxomski-dark-church-bells-423028.mp3"
+      },
+
       {
-  imagen: "./bade.png",
-  titulo: "Leyendas y misterios de Baden-Baden",
-  audio: "./astronautflute-ballroom-dance-554674.mp3"
-},
+        imagen: "./th.png",
+        titulo: "Leyendas y misterios de Thorn",
+        audio: "./freesound_community-church-bell-5993.mp3"
+      },
+
       {
-  imagen: "./schon.png",
-  titulo: "Leyendas y misterios de Schönach",
-  audio: "./mixkit-old-big-clock-hour-1071.wav"
-},
-    {
-  imagen: "./estrasburgo.png",
-  titulo: "Leyendas y misterios de Estrasburgo",
-  audio: "./alex_jauk-midnight-church-bells-218422.mp3"
-},
+        imagen: "./treve.png",
+        titulo: "Leyendas y misterios de Tréveris",
+        audio: "./shut_up_ghost-haunted-mansion-echo-ambiance-186925.mp3"
+      },
+
       {
-  imagen: "./colmar.png",
-  titulo: "Leyendas y misterios de Colmar",
-  audio: "./mixkit-night-crickets-near-the-swamp-1782.wav"
-},
+        imagen: "./bade.png",
+        titulo: "Leyendas y misterios de Baden-Baden",
+        audio: "./astronautflute-ballroom-dance-554674.mp3"
+      },
+
       {
-  imagen: "./durba.png",
-  titulo: "Leyendas y misterios de Durbach y Staufenberg",
-  audio: "./mixkit-horror-ambience-2482.wav"
-},
+        imagen: "./schon.png",
+        titulo: "Leyendas y misterios de Schönach",
+        audio: "./mixkit-old-big-clock-hour-1071.wav"
+      },
+
       {
-  imagen: "./gengenbach.png",
-  titulo: "Leyendas y misterios de Gengenbach",
-  audio: "./freesound_community-cuckoo-clock-90905.mp3"
-}, 
+        imagen: "./estrasburgo.png",
+        titulo: "Leyendas y misterios de Estrasburgo",
+        audio: "./alex_jauk-midnight-church-bells-218422.mp3"
+      },
+
       {
-  imagen: "./triburgo.png",
-  titulo: "Leyendas y misterios de Triburgo",
-  audio: "./mixkit-waterfall-in-the-woods-2517.wav"
-},
+        imagen: "./colmar.png",
+        titulo: "Leyendas y misterios de Colmar",
+        audio: "./mixkit-night-crickets-near-the-swamp-1782.wav"
+      },
+
       {
-  imagen: "./titisee.png",
-  titulo: "Leyendas y misterios de Titisee",
-  audio: "./prem_adhikary-relaxing-amp-calming-evening-lake-water-176820.mp3"
-},
+        imagen: "./durba.png",
+        titulo: "Leyendas y misterios de Durbach y Staufenberg",
+        audio: "./mixkit-horror-ambience-2482.wav"
+      },
+
       {
-  imagen: "./basilea.png",
-  titulo: "Leyendas y misterios de Basilea",
-  audio: "./dragon-studio-river-ambience-420903.mp3"
-},
+        imagen: "./gengenbach.png",
+        titulo: "Leyendas y misterios de Gengenbach",
+        audio: "./freesound_community-cuckoo-clock-90905.mp3"
+      },
+
       {
-  imagen: "./berna.png",
-  titulo: "Leyendas y misterios de Berna",
-  audio: "./universfield-bear-growl-191995.mp3"
-},
+        imagen: "./triburgo.png",
+        titulo: "Leyendas y misterios de Triburgo",
+        audio: "./mixkit-waterfall-in-the-woods-2517.wav"
+      },
+
       {
-  imagen: "./murten.png",
-  titulo: "Leyendas y misterios de Murten",
-  audio: "./freesound_community-medieval-fanfare-6826.mp3"
-},
+        imagen: "./titisee.png",
+        titulo: "Leyendas y misterios de Titisee",
+        audio: "./prem_adhikary-relaxing-amp-calming-evening-lake-water-176820.mp3"
+      },
+
       {
-  imagen: "./montreux.png",
-  titulo: "Leyendas y misterios de Montreux",
-  audio: "./medieval_horizons-medieval-horizons-squire-470880.mp3"
-},
-     {
-  imagen: "./chillon.png",
-  titulo: "Leyendas y misterios del Château de Chillon",
-  audio: "./coghezzi-ncient-temple-horror-ambience-dark-catacombs-atmosphere-539976.mp3"
-},
-       {
-  imagen: "./nyon.png",
-  titulo: "Leyendas y misterios de Nyon",
-  audio: "./soundsforyou-birds-singing-calm-river-nature-ambient-sound-127411.mp3"
-},
+        imagen: "./basilea.png",
+        titulo: "Leyendas y misterios de Basilea",
+        audio: "./dragon-studio-river-ambience-420903.mp3"
+      },
+
       {
-  imagen: "./ginebra.png",
-  titulo: "Leyendas y misterios de Ginebra",
-  audio: "./samuelfjohanns-pretty-mysterious-197012.mp3"
-},
+        imagen: "./berna.png",
+        titulo: "Leyendas y misterios de Berna",
+        audio: "./universfield-bear-growl-191995.mp3"
+      },
+
+      {
+        imagen: "./murten.png",
+        titulo: "Leyendas y misterios de Murten",
+        audio: "./freesound_community-medieval-fanfare-6826.mp3"
+      },
+
+      {
+        imagen: "./montreux.png",
+        titulo: "Leyendas y misterios de Montreux",
+        audio: "./medieval_horizons-medieval-horizons-squire-470880.mp3"
+      },
+
+      {
+        imagen: "./chillon.png",
+        titulo: "Leyendas y misterios del Château de Chillon",
+        audio: "./coghezzi-ncient-temple-horror-ambience-dark-catacombs-atmosphere-539976.mp3"
+      },
+
+      {
+        imagen: "./nyon.png",
+        titulo: "Leyendas y misterios de Nyon",
+        audio: "./soundsforyou-birds-singing-calm-river-nature-ambient-sound-127411.mp3"
+      },
+
+      {
+        imagen: "./ginebra.png",
+        titulo: "Leyendas y misterios de Ginebra",
+        audio: "./samuelfjohanns-pretty-mysterious-197012.mp3"
+      }
+
     ];
 
+
     let paginaActual = 0;
+
 
     const imagenPagina =
       document.getElementById("imagenPagina");
@@ -358,15 +676,28 @@
     const botonSiguiente =
       document.getElementById("siguiente");
 
+    const enlacesIndice =
+      document.getElementById("enlacesIndice");
 
-    function mostrarPagina() {
+
+    function mostrarPagina(reproducirAudio = false) {
 
       const pagina = paginas[paginaActual];
+
 
       /* IMAGEN */
 
       imagenPagina.src = pagina.imagen;
       imagenPagina.alt = pagina.titulo;
+
+
+      /* ÍNDICE CLICABLE */
+
+      if (pagina.imagen === "./indice.png") {
+        enlacesIndice.style.display = "block";
+      } else {
+        enlacesIndice.style.display = "none";
+      }
 
 
       /* CONTADOR */
@@ -390,20 +721,33 @@
       /* DETENER AUDIO ANTERIOR */
 
       audioPagina.pause();
-      audioPagina.currentTime = 0;
+
+      try {
+        audioPagina.currentTime = 0;
+      } catch (error) {
+      }
 
       audioPagina.removeAttribute("src");
 
 
-      /* CARGAR AUDIO DE ESTA PÁGINA */
+      /* AUDIO DE LA PÁGINA */
 
       if (pagina.audio) {
 
         cajaAudio.style.display = "block";
 
         audioPagina.src = pagina.audio;
-
         audioPagina.load();
+
+        if (reproducirAudio) {
+
+          audioPagina.play().catch(function() {
+            console.log(
+              "El navegador ha bloqueado la reproducción automática."
+            );
+          });
+
+        }
 
       } else {
 
@@ -415,81 +759,84 @@
 
     function paginaSiguiente() {
 
-  if (paginaActual < paginas.length - 1) {
+      if (paginaActual < paginas.length - 1) {
 
-    paginaActual++;
+        paginaActual++;
 
-    mostrarPagina();
+        mostrarPagina(true);
 
-    if (paginas[paginaActual].audio) {
-      audioPagina.play().catch(function() {
-        console.log("El navegador ha bloqueado la reproducción automática.");
-      });
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+
+      }
     }
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  }
-}
 
+    function paginaAnterior() {
 
-function paginaAnterior() {
-  if (paginaActual > 0) {
-    paginaActual--;
-    mostrarPagina();
+      if (paginaActual > 0) {
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  }
-}
+        paginaActual--;
 
-function irAlIndice() {
-  paginaActual = 1;
-  mostrarPagina();
+        mostrarPagina(true);
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-}
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
 
-function irADestino(destino) {
-  const posicion = paginas.findIndex(function(pagina) {
-    return pagina.titulo.toLowerCase().includes(destino.toLowerCase());
-  });
-
-  if (posicion !== -1) {
-    paginaActual = posicion;
-    mostrarPagina();
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  }
-}
-
-mostrarPagina();
-
-    if (paginas[paginaActual].audio) {
-      audioPagina.play().catch(function() {
-        console.log("El navegador ha bloqueado la reproducción automática.");
-      });
+      }
     }
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  }
-}
+
+    function irAlIndice() {
+
+      paginaActual = 1;
+
+      mostrarPagina(false);
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    }
 
 
-    /* PRECARGAR LAS IMÁGENES */
+    function irADestino(destino) {
+
+      const destinoBuscado =
+        destino.toLowerCase();
+
+      const posicion =
+        paginas.findIndex(function(pagina) {
+
+          return pagina.titulo
+            .toLowerCase()
+            .includes(destinoBuscado);
+
+        });
+
+
+      if (posicion !== -1) {
+
+        paginaActual = posicion;
+
+        mostrarPagina(true);
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+
+      }
+
+    }
+
+
+    /* PRECARGAR IMÁGENES */
 
     paginas.forEach(function(pagina) {
 
@@ -502,7 +849,7 @@ mostrarPagina();
 
     /* MOSTRAR PORTADA */
 
-    mostrarPagina();
+    mostrarPagina(false);
 
   </script>
 
