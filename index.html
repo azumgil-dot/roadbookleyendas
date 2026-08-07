@@ -24,7 +24,6 @@
     .pagina {
       width: 100%;
       max-width: 900px;
-      position: relative;
       margin: 0 auto;
     }
 
@@ -34,17 +33,15 @@
       height: auto;
     }
 
-    .audio-superpuesto {
-      position: absolute;
-      left: 20px;
-      right: 20px;
-      bottom: 15px;
-      z-index: 10;
+    .audio {
+      width: 100%;
+      max-width: 900px;
+      padding: 8px 20px 5px;
     }
 
     #audioPagina {
       width: 100%;
-      opacity: 0.92;
+      display: block;
     }
 
     .navegacion {
@@ -54,7 +51,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 15px 20px 25px;
+      padding: 10px 20px 25px;
     }
 
     button {
@@ -90,13 +87,6 @@
     }
 
     @media (max-width: 600px) {
-
-      .audio-superpuesto {
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-      }
-
       button {
         padding: 10px 12px;
         font-size: 14px;
@@ -112,6 +102,11 @@
         padding-left: 10px;
         padding-right: 10px;
       }
+
+      .audio {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
     }
   </style>
 </head>
@@ -119,17 +114,15 @@
 <body>
 
   <div class="pagina">
-
     <img
       id="imagenPagina"
       src="./Leyendas.png"
       alt="Leyendas y Misterios"
     >
+  </div>
 
-    <div class="audio-superpuesto" id="cajaAudio">
-      <audio id="audioPagina" controls loop></audio>
-    </div>
-
+  <div class="audio" id="cajaAudio">
+    <audio id="audioPagina" controls loop></audio>
   </div>
 
   <div class="navegacion">
@@ -139,7 +132,7 @@
     </button>
 
     <div id="contadorPagina">
-      Página 1 de 6
+      Página 1 de 8
     </div>
 
     <button id="siguiente" onclick="paginaSiguiente()">
@@ -182,55 +175,57 @@
         audio: "./templarsounds.mp3"
       },
       {
-  imagen: "./rouenmiste.png",
-  titulo: "Leyendas y misterios de Rouen",
-  audio: "./dragon.mp3"
-},
-{
-  imagen: "./Brujas misterios.png",
-  titulo: "Leyendas y misterios de Brujas",
-  audio: "./carillon2.mp3"
-}
+        imagen: "./rouenmiste.png",
+        titulo: "Leyendas y misterios de Rouen",
+        audio: "./dragon.mp3"
+      },
+      {
+        imagen: "./Brujas misterios.png",
+        titulo: "Leyendas y misterios de Brujas",
+        audio: "./carillon2.mp3"
+      }
     ];
 
     let paginaActual = 0;
 
+    const imagen = document.getElementById("imagenPagina");
+    const audio = document.getElementById("audioPagina");
+    const cajaAudio = document.getElementById("cajaAudio");
+    const contador = document.getElementById("contadorPagina");
+    const anterior = document.getElementById("anterior");
+    const siguiente = document.getElementById("siguiente");
+
     function mostrarPagina() {
 
-      const imagen = document.getElementById("imagenPagina");
-      const audio = document.getElementById("audioPagina");
-      const cajaAudio = document.getElementById("cajaAudio");
-      const contador = document.getElementById("contadorPagina");
+      const pagina = paginas[paginaActual];
 
-      imagen.src = paginas[paginaActual].imagen;
-      imagen.alt = paginas[paginaActual].titulo;
+      imagen.src = pagina.imagen;
+      imagen.alt = pagina.titulo;
 
       contador.textContent =
         "Página " + (paginaActual + 1) + " de " + paginas.length;
 
-      document.getElementById("anterior").disabled =
-        paginaActual === 0;
-
-      document.getElementById("siguiente").disabled =
-        paginaActual === paginas.length - 1;
+      anterior.disabled = paginaActual === 0;
+      siguiente.disabled = paginaActual === paginas.length - 1;
 
       audio.pause();
       audio.removeAttribute("src");
+      audio.load();
 
-      if (paginas[paginaActual].audio !== "") {
+      if (pagina.audio) {
 
-        audio.src = paginas[paginaActual].audio;
         cajaAudio.style.display = "block";
+
+        audio.src = pagina.audio;
         audio.load();
 
-        audio.play().catch(function() {
-          console.log("Pulsa Play para iniciar el sonido.");
+        audio.play().catch(function(error) {
+          console.log("El navegador requiere pulsar Play:", error);
         });
 
       } else {
 
         cajaAudio.style.display = "none";
-
       }
     }
 
@@ -239,6 +234,7 @@
       if (paginaActual < paginas.length - 1) {
 
         paginaActual++;
+
         mostrarPagina();
 
         window.scrollTo({
@@ -253,6 +249,7 @@
       if (paginaActual > 0) {
 
         paginaActual--;
+
         mostrarPagina();
 
         window.scrollTo({
