@@ -426,12 +426,28 @@
 
 
 function paginaAnterior() {
-
   if (paginaActual > 0) {
-
     paginaActual--;
-
     mostrarPagina();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+}
+
+function irAlIndice() {
+  paginaActual = 1;
+  mostrarPagina();
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+mostrarPagina();
 
     if (paginas[paginaActual].audio) {
       audioPagina.play().catch(function() {
