@@ -57,10 +57,14 @@
       z-index: 20;
     }
 
-    .zona-indice:hover {
-      opacity: 0.12;
-      background: #3dd9ac !important;
-    }
+    .zona-indice:hover,
+.zona-indice:focus,
+.zona-indice:active {
+  opacity: 0 !important;
+  background: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
 
     .audio {
       width: 100%;
