@@ -444,12 +444,12 @@
 
     <button onclick="irAlIndice()">
       Índice
-    </button>
+     </button>
     
-<button onclick="irAlRoadbook()">
+   <button onclick="irAlRoadbook()">
   Roadbook
 </button>
-    
+       
     <div id="contadorPagina">
       Página 1
     </div>
@@ -823,11 +823,13 @@ if (pagina.imagen === "./indice.png") {
         });
 
       }
-    }
-
-
+    
     function irAlIndice() {
-
+      
+function irAlRoadbook() {
+  window.location.href = "https://loscletusroadeurope.my.canva.site/pdfenlaces-pdf";
+}
+      
       paginaActual = 1;
 
       mostrarPagina(false);
