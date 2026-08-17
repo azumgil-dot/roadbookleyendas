@@ -32,20 +32,44 @@
       flex: 1;
       min-height: 0;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       overflow: hidden;
       padding: 6px;
     }
 
+    .hoja {
+      position: relative;
+      display: inline-block;
+    }
+
     #canvasPDF {
       display: block;
+      background: white;
       max-width: 100%;
       max-height: 100%;
-      width: auto;
-      height: auto;
-      background: white;
       box-shadow: 0 0 12px rgba(0,0,0,0.35);
+    }
+
+    #capaEnlaces {
+      position: absolute;
+      left: 0;
+      top: 0;
+      pointer-events: none;
+    }
+
+    .enlacePDF {
+      position: absolute;
+      display: block;
+      pointer-events: auto;
+      background: transparent;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .enlacePDF:hover {
+      outline: 2px solid rgba(61,217,172,0.55);
+      background: rgba(61,217,172,0.08);
     }
 
     .navegacion {
@@ -109,9 +133,18 @@
 
   <div class="app">
 
-    <div class="pagina">
-      <canvas id="canvasPDF"></canvas>
+    <div class="pagina" id="contenedorPagina">
+
+      <div class="hoja" id="hoja">
+
+        <canvas id="canvasPDF"></canvas>
+
+        <div id="capaEnlaces"></div>
+
+      </div>
+
     </div>
+
 
     <div class="navegacion">
 
@@ -135,10 +168,10 @@
   <script type="module">
 
     import * as pdfjsLib from
-      "https://cdn.jsdelivr.net/npm/pdfjs-dist@5.4.149/build/pdf.mjs";
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.149/pdf.min.mjs";
 
     pdfjsLib.GlobalWorkerOptions.workerSrc =
-      "https://cdn.jsdelivr.net/npm/pdfjs-dist@5.4.149/build/pdf.worker.mjs";
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.149/pdf.worker.min.mjs";
 
 
     const archivoPDF =
@@ -152,11 +185,20 @@
     let renderActual = null;
 
 
+    const contenedorPagina =
+      document.getElementById("contenedorPagina");
+
+    const hoja =
+      document.getElementById("hoja");
+
     const canvas =
       document.getElementById("canvasPDF");
 
     const contexto =
       canvas.getContext("2d");
+
+    const capaEnlaces =
+      document.getElementById("capaEnlaces");
 
     const contador =
       document.getElementById("contador");
@@ -170,13 +212,23 @@
 
     async function cargarPDF() {
 
-      const carga =
-        pdfjsLib.getDocument(archivoPDF);
+      try {
 
-      pdfDocumento =
-        await carga.promise;
+        pdfDocumento =
+          await pdfjsLib
+            .getDocument(archivoPDF)
+            .promise;
 
-      await mostrarPagina();
+        await mostrarPagina();
+
+      } catch (error) {
+
+        console.error(
+          "Error al cargar el PDF:",
+          error
+        );
+
+      }
 
     }
 
@@ -199,11 +251,9 @@
 
 
       const pagina =
-        await pdfDocumento.getPage(paginaActual);
-
-
-      const contenedor =
-        document.querySelector(".pagina");
+        await pdfDocumento.getPage(
+          paginaActual
+        );
 
 
       const viewportOriginal =
@@ -213,10 +263,10 @@
 
 
       const anchoDisponible =
-        contenedor.clientWidth - 12;
+        contenedorPagina.clientWidth - 12;
 
       const altoDisponible =
-        contenedor.clientHeight - 12;
+        contenedorPagina.clientHeight - 12;
 
 
       const escalaAncho =
@@ -259,12 +309,41 @@
 
 
       canvas.style.width =
-        Math.floor(viewport.width) +
-        "px";
+        viewport.width + "px";
 
       canvas.style.height =
-        Math.floor(viewport.height) +
-        "px";
+        viewport.height + "px";
+
+
+      hoja.style.width =
+        viewport.width + "px";
+
+      hoja.style.height =
+        viewport.height + "px";
+
+
+      capaEnlaces.style.width =
+        viewport.width + "px";
+
+      capaEnlaces.style.height =
+        viewport.height + "px";
+
+
+      contexto.setTransform(
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      );
+
+      contexto.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
 
 
       const transform =
@@ -295,13 +374,19 @@
       } catch (error) {
 
         if (
-          error &&
-          error.name !== "RenderingCancelledException"
+          error.name !==
+          "RenderingCancelledException"
         ) {
           console.error(error);
         }
 
       }
+
+
+      await crearEnlaces(
+        pagina,
+        viewport
+      );
 
 
       contador.textContent =
@@ -318,6 +403,227 @@
       siguiente.disabled =
         paginaActual ===
         pdfDocumento.numPages;
+
+    }
+
+
+    async function crearEnlaces(
+      pagina,
+      viewport
+    ) {
+
+      capaEnlaces.innerHTML = "";
+
+
+      const anotaciones =
+        await pagina.getAnnotations({
+          intent: "display"
+        });
+
+
+      for (
+        const anotacion
+        of anotaciones
+      ) {
+
+        if (
+          anotacion.subtype !== "Link"
+        ) {
+          continue;
+        }
+
+
+        if (!anotacion.rect) {
+          continue;
+        }
+
+
+        const rect =
+          viewport
+            .convertToViewportRectangle(
+              anotacion.rect
+            );
+
+
+        const izquierda =
+          Math.min(
+            rect[0],
+            rect[2]
+          );
+
+        const arriba =
+          Math.min(
+            rect[1],
+            rect[3]
+          );
+
+        const ancho =
+          Math.abs(
+            rect[2] -
+            rect[0]
+          );
+
+        const alto =
+          Math.abs(
+            rect[3] -
+            rect[1]
+          );
+
+
+        const enlace =
+          document.createElement("a");
+
+
+        enlace.className =
+          "enlacePDF";
+
+
+        enlace.style.left =
+          izquierda + "px";
+
+        enlace.style.top =
+          arriba + "px";
+
+        enlace.style.width =
+          ancho + "px";
+
+        enlace.style.height =
+          alto + "px";
+
+
+        /*
+          ENLACES EXTERNOS
+        */
+
+        if (
+          anotacion.url ||
+          anotacion.unsafeUrl
+        ) {
+
+          enlace.href =
+            anotacion.url ||
+            anotacion.unsafeUrl;
+
+          enlace.target =
+            "_blank";
+
+          enlace.rel =
+            "noopener noreferrer";
+
+        }
+
+
+        /*
+          ENLACES A OTRA PÁGINA
+          DEL MISMO PDF
+        */
+
+        else if (
+          anotacion.dest
+        ) {
+
+          enlace.href = "#";
+
+
+          enlace.addEventListener(
+            "click",
+            async function(evento) {
+
+              evento.preventDefault();
+
+
+              try {
+
+                let destino =
+                  anotacion.dest;
+
+
+                if (
+                  typeof destino ===
+                  "string"
+                ) {
+
+                  destino =
+                    await pdfDocumento
+                      .getDestination(
+                        destino
+                      );
+
+                }
+
+
+                if (
+                  !Array.isArray(destino) ||
+                  !destino[0]
+                ) {
+                  return;
+                }
+
+
+                const referencia =
+                  destino[0];
+
+
+                let numeroPagina;
+
+
+                if (
+                  typeof referencia ===
+                  "object"
+                ) {
+
+                  numeroPagina =
+                    await pdfDocumento
+                      .getPageIndex(
+                        referencia
+                      );
+
+                } else {
+
+                  numeroPagina =
+                    referencia;
+
+                }
+
+
+                paginaActual =
+                  numeroPagina + 1;
+
+
+                await mostrarPagina();
+
+              } catch (error) {
+
+                console.error(
+                  "No se pudo abrir el enlace interno:",
+                  error
+                );
+
+              }
+
+            }
+          );
+
+        }
+
+
+        /*
+          SI NO HAY DESTINO,
+          NO AÑADIMOS LA ZONA
+        */
+
+        else {
+
+          continue;
+
+        }
+
+
+        capaEnlaces.appendChild(
+          enlace
+        );
+
+      }
 
     }
 
@@ -357,10 +663,26 @@
       };
 
 
+    let temporizadorResize;
+
+
     window.addEventListener(
       "resize",
       function() {
-        mostrarPagina();
+
+        clearTimeout(
+          temporizadorResize
+        );
+
+
+        temporizadorResize =
+          setTimeout(
+            function() {
+              mostrarPagina();
+            },
+            150
+          );
+
       }
     );
 
