@@ -21,35 +21,41 @@
       overflow: hidden;
     }
 
-    .visor {
+    .app {
       width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
     }
 
-    .pdf {
+    .pagina {
       flex: 1;
-      width: 100%;
       min-height: 0;
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-      background: white;
-    }
-
-    .navegacion {
-      width: 100%;
-      background: #171312;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 15px;
+      overflow: hidden;
+      padding: 6px;
+    }
+
+    #canvasPDF {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      background: white;
+      box-shadow: 0 0 12px rgba(0,0,0,0.35);
+    }
+
+    .navegacion {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
       padding: 10px;
+      background: #171312;
     }
 
     button {
@@ -73,7 +79,7 @@
       background: #2b2422;
       border: 2px solid #3dd9ac;
       border-radius: 18px;
-      padding: 9px 15px;
+      padding: 9px 14px;
       font-weight: bold;
       min-width: 110px;
       text-align: center;
@@ -101,13 +107,10 @@
 
 <body>
 
-  <div class="visor">
+  <div class="app">
 
-    <div class="pdf">
-      <iframe
-        id="visorPDF"
-        src="./pdfenlacesgith-01-11.pdf#page=1&zoom=page-fit&toolbar=0&navpanes=0">
-      </iframe>
+    <div class="pagina">
+      <canvas id="canvasPDF"></canvas>
     </div>
 
     <div class="navegacion">
@@ -117,7 +120,7 @@
       </button>
 
       <div id="contador">
-        Página 1 de 11
+        Página 1
       </div>
 
       <button id="siguiente" onclick="paginaSiguiente()">
@@ -129,17 +132,31 @@
   </div>
 
 
-  <script>
+  <script type="module">
 
-    const archivoPDF = "./pdfenlacesgith-01-11.pdf";
+    import * as pdfjsLib from
+      "https://cdn.jsdelivr.net/npm/pdfjs-dist@5.4.149/build/pdf.mjs";
 
-    const totalPaginas = 11;
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdn.jsdelivr.net/npm/pdfjs-dist@5.4.149/build/pdf.worker.mjs";
+
+
+    const archivoPDF =
+      "./pdfenlacesgith-01-11.pdf";
+
+
+    let pdfDocumento = null;
 
     let paginaActual = 1;
 
+    let renderActual = null;
 
-    const visorPDF =
-      document.getElementById("visorPDF");
+
+    const canvas =
+      document.getElementById("canvasPDF");
+
+    const contexto =
+      canvas.getContext("2d");
 
     const contador =
       document.getElementById("contador");
@@ -151,55 +168,204 @@
       document.getElementById("siguiente");
 
 
-    function mostrarPagina() {
+    async function cargarPDF() {
 
-      visorPDF.src =
-        archivoPDF +
-        "#page=" +
-        paginaActual +
-        "&zoom=page-fit&toolbar=0&navpanes=0";
+      const carga =
+        pdfjsLib.getDocument(archivoPDF);
+
+      pdfDocumento =
+        await carga.promise;
+
+      await mostrarPagina();
+
+    }
+
+
+    async function mostrarPagina() {
+
+      if (!pdfDocumento) {
+        return;
+      }
+
+
+      if (renderActual) {
+
+        try {
+          renderActual.cancel();
+        } catch (error) {
+        }
+
+      }
+
+
+      const pagina =
+        await pdfDocumento.getPage(paginaActual);
+
+
+      const contenedor =
+        document.querySelector(".pagina");
+
+
+      const viewportOriginal =
+        pagina.getViewport({
+          scale: 1
+        });
+
+
+      const anchoDisponible =
+        contenedor.clientWidth - 12;
+
+      const altoDisponible =
+        contenedor.clientHeight - 12;
+
+
+      const escalaAncho =
+        anchoDisponible /
+        viewportOriginal.width;
+
+      const escalaAlto =
+        altoDisponible /
+        viewportOriginal.height;
+
+
+      const escala =
+        Math.min(
+          escalaAncho,
+          escalaAlto
+        );
+
+
+      const viewport =
+        pagina.getViewport({
+          scale: escala
+        });
+
+
+      const pixelRatio =
+        window.devicePixelRatio || 1;
+
+
+      canvas.width =
+        Math.floor(
+          viewport.width *
+          pixelRatio
+        );
+
+      canvas.height =
+        Math.floor(
+          viewport.height *
+          pixelRatio
+        );
+
+
+      canvas.style.width =
+        Math.floor(viewport.width) +
+        "px";
+
+      canvas.style.height =
+        Math.floor(viewport.height) +
+        "px";
+
+
+      const transform =
+        pixelRatio !== 1
+          ? [
+              pixelRatio,
+              0,
+              0,
+              pixelRatio,
+              0,
+              0
+            ]
+          : null;
+
+
+      renderActual =
+        pagina.render({
+          canvasContext: contexto,
+          viewport: viewport,
+          transform: transform
+        });
+
+
+      try {
+
+        await renderActual.promise;
+
+      } catch (error) {
+
+        if (
+          error &&
+          error.name !== "RenderingCancelledException"
+        ) {
+          console.error(error);
+        }
+
+      }
+
 
       contador.textContent =
         "Página " +
         paginaActual +
         " de " +
-        totalPaginas;
+        pdfDocumento.numPages;
+
 
       anterior.disabled =
         paginaActual === 1;
 
+
       siguiente.disabled =
-        paginaActual === totalPaginas;
+        paginaActual ===
+        pdfDocumento.numPages;
+
     }
 
 
-    function paginaSiguiente() {
+    window.paginaSiguiente =
+      async function() {
 
-      if (paginaActual < totalPaginas) {
+        if (
+          pdfDocumento &&
+          paginaActual <
+          pdfDocumento.numPages
+        ) {
 
-        paginaActual++;
+          paginaActual++;
 
+          await mostrarPagina();
+
+        }
+
+      };
+
+
+    window.paginaAnterior =
+      async function() {
+
+        if (
+          pdfDocumento &&
+          paginaActual > 1
+        ) {
+
+          paginaActual--;
+
+          await mostrarPagina();
+
+        }
+
+      };
+
+
+    window.addEventListener(
+      "resize",
+      function() {
         mostrarPagina();
-
       }
-
-    }
-
-
-    function paginaAnterior() {
-
-      if (paginaActual > 1) {
-
-        paginaActual--;
-
-        mostrarPagina();
-
-      }
-
-    }
+    );
 
 
-    mostrarPagina();
+    cargarPDF();
 
   </script>
 
