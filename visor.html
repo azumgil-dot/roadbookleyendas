@@ -1,1 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Roadbook</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: #171312;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .visor {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pdf {
+      flex: 1;
+      width: 100%;
+      min-height: 0;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      background: white;
+    }
+
+    .navegacion {
+      width: 100%;
+      background: #171312;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding: 10px;
+    }
+
+    button {
+      background: #3dd9ac;
+      color: #171312;
+      border: none;
+      border-radius: 20px;
+      padding: 11px 18px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    #contador {
+      color: white;
+      background: #2b2422;
+      border: 2px solid #3dd9ac;
+      border-radius: 18px;
+      padding: 9px 15px;
+      font-weight: bold;
+      min-width: 110px;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .navegacion {
+        gap: 6px;
+        padding: 7px;
+      }
+
+      button {
+        padding: 9px 10px;
+        font-size: 12px;
+      }
+
+      #contador {
+        font-size: 12px;
+        min-width: 90px;
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="visor">
+
+    <div class="pdf">
+      <iframe
+        id="visorPDF"
+        src="./pdfenlacesgith-01-11.pdf#page=1&zoom=page-fit&toolbar=0&navpanes=0">
+      </iframe>
+    </div>
+
+    <div class="navegacion">
+
+      <button id="anterior" onclick="paginaAnterior()">
+        ← Anterior
+      </button>
+
+      <div id="contador">
+        Página 1 de 11
+      </div>
+
+      <button id="siguiente" onclick="paginaSiguiente()">
+        Siguiente →
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const archivoPDF = "./pdfenlacesgith-01-11.pdf";
+
+    const totalPaginas = 11;
+
+    let paginaActual = 1;
+
+
+    const visorPDF =
+      document.getElementById("visorPDF");
+
+    const contador =
+      document.getElementById("contador");
+
+    const anterior =
+      document.getElementById("anterior");
+
+    const siguiente =
+      document.getElementById("siguiente");
+
+
+    function mostrarPagina() {
+
+      visorPDF.src =
+        archivoPDF +
+        "#page=" +
+        paginaActual +
+        "&zoom=page-fit&toolbar=0&navpanes=0";
+
+      contador.textContent =
+        "Página " +
+        paginaActual +
+        " de " +
+        totalPaginas;
+
+      anterior.disabled =
+        paginaActual === 1;
+
+      siguiente.disabled =
+        paginaActual === totalPaginas;
+    }
+
+
+    function paginaSiguiente() {
+
+      if (paginaActual < totalPaginas) {
+
+        paginaActual++;
+
+        mostrarPagina();
+
+      }
+
+    }
+
+
+    function paginaAnterior() {
+
+      if (paginaActual > 1) {
+
+        paginaActual--;
+
+        mostrarPagina();
+
+      }
+
+    }
+
+
+    mostrarPagina();
+
+  </script>
+
+</body>
+</html>
