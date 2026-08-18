@@ -218,7 +218,7 @@
 
         pdfDocumento =
           await pdfjsLib
-            .getDocument(archivoPDF)
+            .getDocument(archivosPDF[0])
             .promise;
 
         await mostrarPagina();
