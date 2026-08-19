@@ -885,7 +885,14 @@ if (pagina.imagen === "./indice.png") {
 
     /* MOSTRAR PORTADA */
 
-    mostrarPagina(false);
+ const parametros = new URLSearchParams(window.location.search);
+const destino = parametros.get("destino");
+
+if (destino) {
+  irADestino(destino);
+} else {
+  mostrarPagina(false);
+}
 
   </script>
 
